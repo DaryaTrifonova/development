@@ -1,0 +1,25 @@
+# Игнорируем все файлы и папки
+/*
+
+# Не игнорируем конкретные папки и файлы
+!/migrations_sqlite3/
+!/app/requirements.txt
+!/app/templates/
+!/app/migrations/
+!/app/static/
+!/app/app.py
+!/app/auth.py
+
+!/app/models.py
+
+!/app/reviews.py
+
+!/app/tools.py
+
+!/app/user_policy.py
+
+!/app/visits.py
+!/app/config.py
+
+
+

@@ -9,6 +9,7 @@
 !/app/migrations/
 !/app/static/
 !/app/app.py
+!/app/Dockerfile
 !/app/auth.py
 
 !/app/models.py

@@ -8,7 +8,7 @@ pipeline {
         STAGE_SERVER = 'test_admin@192.168.3.92'             // Укажите ваш stage-сервер
         DOCKER_COMPOSE_PATH = '/home/test_admin/web-dev-2024-2-exam-main/app/docker-compose.yml'  // Путь к docker-compose на вашем сервере
         REPO_URL = 'https://github.com/DaryaTrifonova/development.git'  // URL вашего репозитория
-        BRANCH_NAME = 'dev'                            // Ветка, с которой происходит деплой
+        BRANCH_NAME = 'feature'                            // Ветка, с которой происходит деплой
     }
 
     stages {

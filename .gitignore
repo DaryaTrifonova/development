@@ -2,6 +2,7 @@
 /*
 
 # Не игнорируем конкретные папки и файлы
+!Jenkinsfile
 !/migrations_sqlite3/
 !/app/requirements.txt
 !/app/templates/

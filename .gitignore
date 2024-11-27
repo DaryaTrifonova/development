@@ -2,6 +2,8 @@
 /*
 
 # Не игнорируем конкретные папки и файлы
+!Dockerfile
+
 !Jenkinsfile
 !/migrations_sqlite3/
 !/app/requirements.txt

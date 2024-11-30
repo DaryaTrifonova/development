@@ -37,18 +37,21 @@ pipeline {
             }
         }
 
-        stage('Deploy to Stage') {
-    steps {
-        echo 'Deploying application to Stage server...'
-        script {
-            sshagent(['ssh-credentials-id']) {
-                sh '''
-                    ssh -o StrictHostKeyChecking=no user@your-server "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
-                '''
+       stage('Deploy to Stage') {
+            steps {
+                echo 'Deploying application to Stage server...'
+                script {
+                    sshagent(['ssh-credentials-id']) {
+                        sh """
+                            export SSH_AUTH_SOCK=\$(find /tmp/ssh-* -name agent.\*) 
+                            ssh-add  /home/test_admin/.ssh/id_rsa 
+                            ssh -o StrictHostKeyChecking=no -i /home/test_admin/.ssh/id_rsa test_admin@172.20.10.7 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                        """
+                    }
+                }
             }
         }
-    }
-}
+
 
         stage('Cleanup') {
             steps {

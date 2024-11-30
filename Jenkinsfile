@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo 'Pushing Docker image to Docker Hub...'
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-credentials-id') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
                         docker.image('trifonovada/webapp:latest').push()
                     }
                 }

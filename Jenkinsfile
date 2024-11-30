@@ -27,13 +27,12 @@ pipeline {
             steps {
                 echo 'Pushing Docker image to Docker Hub...'
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
-                        docker.image('trifonovada/webapp:latest').push()
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        sh "docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                     }
                 }
             }
         }
-
         stage('Cleanup') {
             steps {
                 echo 'Cleaning up Docker...'

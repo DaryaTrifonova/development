@@ -43,7 +43,7 @@ pipeline {
             script {
                 def buildNumber = env.BUILD_NUMBER
                 sh '''#!/bin/bash
-                ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:${buildNumber} && docker run -d trifonovada/webapp:${buildNumber}"
+                ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:latest && docker run -d trifonovada/webapp:latest"
                 '''
             }
         }

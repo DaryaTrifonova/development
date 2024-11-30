@@ -43,14 +43,14 @@ pipeline {
                 script {
                     sshagent(['ssh-credentials-id']) {
                         sh """
-                            export SSH_AUTH_SOCK=\$(find /tmp/ssh-* -name 'agent.*')
-                            ssh-add /path/to/your/private_key
-                            ssh -o StrictHostKeyChecking=no -i /path/to/your/private_key user@your-server "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                            ssh test_admin@172.20.10.7 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
                         """
                     }
                 }
             }
         }
+    }
+}
 
 
         stage('Cleanup') {

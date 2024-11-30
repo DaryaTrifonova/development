@@ -1,62 +1,35 @@
-
 pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_REPO = "trifonovada/webapp"
-        DOCKER_HUB_USER = "trifonovada"
-        DOCKER_HUB_PASSWORD = credentials('docker-hub-credentials-id')
-        STAGE_SERVER = "test_admin@172.20.10.7"
-        DOCKER_COMPOSE_DIR = "/home/test_admin/web-dev-2024-2-exam-main/app/docker-compose.yaml"
+        DOCKER_IMAGE = 'trifonovada/webapp' // Замените на ваш репозиторий
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials-id'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
+                // Клонируем репозиторий
                 git branch: 'master', url: 'https://github.com/DaryaTrifonova/development.git'
             }
         }
-
         stage('Build Docker Image') {
             steps {
+                // Собираем Docker-образ
                 script {
-                    sh 'docker build -t $DOCKER_HUB_REPO/web-app .'
+                    docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
-
-        stage('Push Docker Image') {
+        stage('Push to Docker Hub') {
             steps {
+                // Пушим образ в Docker Hub
                 script {
-                    withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
-                        sh """
-                        echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-                        docker push $DOCKER_HUB_REPO/web-app
-                        """
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
+                        docker.image("${DOCKER_IMAGE}:latest").push()
                     }
                 }
             }
         }
-
-        stage('Deploy to Stage') {
-            steps {
-                sshagent(['ssh-credentials-id']) {
-                    sh """
-                    ssh $STAGE_SERVER "
-                    cd $DOCKER_COMPOSE_DIR &&
-                    docker-compose pull &&
-                    docker-compose up -d
-                    "
-                    """
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed!'
-        }
     }
 }
-

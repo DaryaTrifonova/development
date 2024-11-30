@@ -43,7 +43,7 @@ pipeline {
                 script {
                     sshagent(['ssh-credentials-id']) {
                         sh """
-                            ssh test_admin@172.20.10.7 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                            ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
                         """
                     }
                 }

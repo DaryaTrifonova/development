@@ -38,24 +38,17 @@ pipeline {
         }
 
         stage('Deploy to Stage') {
-            steps {
-                echo 'Deploying application to Stage server...'
-                script {
-                    sshagent([SSH_CREDENTIALS]) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no user@${DEPLOY_SERVER} <<EOF
-                        docker pull ${IMAGE_NAME}:${env.BUILD_NUMBER}
-                        cd /path/to/deployment/directory
-                        echo "Updating docker-compose.yaml..."
-                        sed -i 's|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${env.BUILD_NUMBER}|' ${DOCKER_COMPOSE_FILE}
-                        echo "Restarting application..."
-                        docker-compose down && docker-compose up -d
-                        EOF
-                        """
-                    }
-                }
+    steps {
+        echo 'Deploying application to Stage server...'
+        script {
+            sshagent(['ssh-credentials-id']) {
+                sh '''
+                    ssh -o StrictHostKeyChecking=no user@your-server "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                '''
             }
         }
+    }
+}
 
         stage('Cleanup') {
             steps {

@@ -38,15 +38,17 @@ pipeline {
         }
 
        stage('Deploy to Stage') {
-            steps {
-                echo 'Deploying application to Stage server...'
-                script {
-                        sh '''#!/bin/bash
-                        ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
-                        '''
-                }
+        steps {
+            echo 'Deploying application to Stage server...'
+            script {
+                def buildNumber = env.BUILD_NUMBER
+                sh '''#!/bin/bash
+                ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:${buildNumber} && docker run -d trifonovada/webapp:${buildNumber}"
+                '''
             }
         }
+}
+
 
 
 

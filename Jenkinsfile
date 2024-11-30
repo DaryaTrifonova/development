@@ -2,34 +2,44 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'trifonovada/webapp' // Замените на ваш репозиторий
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials-id'
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials-id' // ID ваших учетных данных Docker Hub
+        IMAGE_NAME = 'trifonovada/webapp' // Имя вашего образа в Docker Hub
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                // Клонируем репозиторий
-                git branch: 'master', url: 'https://github.com/DaryaTrifonova/development.git'
+                echo 'Cloning repository...'
+                checkout scm
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                // Собираем Docker-образ
+                echo 'Building Docker image...'
                 script {
-                    docker.build("${DOCKER_IMAGE}:latest")
+                    sh "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} ."
                 }
             }
         }
+
         stage('Push to Docker Hub') {
             steps {
-                // Пушим образ в Docker Hub
+                echo 'Pushing Docker image to Docker Hub...'
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        docker.image("${DOCKER_IMAGE}:latest").push()
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        sh "docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}"
                     }
                 }
             }
         }
+
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning up Docker...'
+                sh "docker rmi ${IMAGE_NAME}:${env.BUILD_NUMBER}"
+            }
+        }
     }
 }
+

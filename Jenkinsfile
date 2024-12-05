@@ -45,7 +45,7 @@ pipeline {
                     error "BUILD_NUMBER is not valid: ${env.BUILD_NUMBER}"
                 }
                 sh """#!/bin/bash
-                ssh test_admin@192.168.3.98 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                ssh test_admin@192.168.3.96 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
                 """
             }
         }

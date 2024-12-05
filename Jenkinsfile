@@ -41,10 +41,12 @@ pipeline {
         steps {
             echo 'Deploying application to Stage server...'
             script {
-                def buildNumber = env.BUILD_NUMBER
-                sh '''#!/bin/bash
-                ssh test_admin@192.168.3.92 "docker pull trifonovada/webapp:15 && docker run -d trifonovada/webapp:15"
-                '''
+                if (!env.BUILD_NUMBER?.isInteger()) {
+                    error "BUILD_NUMBER is not valid: ${env.BUILD_NUMBER}"
+                }
+                sh """#!/bin/bash
+                ssh test_admin@192.168.3.98 "docker pull trifonovada/webapp:${env.BUILD_NUMBER} && docker run -d trifonovada/webapp:${env.BUILD_NUMBER}"
+                """
             }
         }
 }

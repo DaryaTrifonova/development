@@ -3,7 +3,7 @@ FROM python:3.9-slim
 
 # Указываем рабочую директорию внутри контейнера
 WORKDIR /app
-ENV FLASK_APP=app.py
+ENV FLASK_APP=app/app.py
 # Копируем все файлы проекта в контейнер
 COPY . /app
 

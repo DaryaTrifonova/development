@@ -1,5 +1,3 @@
-  GNU nano 6.2                     docker-compose.yaml
-
 services:
   web:
     build: .
@@ -11,7 +9,7 @@ services:
       - db
     environment:
       - FLASK_ENV=development
-    image: trifonovada/app-web:latest
+    image: trifonovada/webapp:latest
     command: /usr/local/bin/flask run --host=0.0.0.0
   db:
     image: postgres:latest

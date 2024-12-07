@@ -37,6 +37,12 @@ pipeline {
             }
         }
 
+        stage('Checkout Code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/DaryaTrifonova/development.git'
+            }
+        }
+
        stage('Deploy to Stage') {
         steps {
             echo 'Deploying application to Stage server...'
